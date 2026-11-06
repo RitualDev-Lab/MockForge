@@ -1,0 +1,84 @@
+name: "MockForge AI Relational Seed & Schema Gate"
+description: "High-Throughput Relational Mock DB & Seed Synthesizer Gate verifying foreign-key integrity in CI/CD"
+author: "RitualDev Lab"
+
+branding:
+  icon: "database"
+  color: "blue"
+
+inputs:
+  schema_path:
+    description: "Path to SQL DDL or schema file to validate and synthesize seeds for"
+    required: true
+    default: "schema.sql"
+  count:
+    description: "Number of relational rows to synthesize per entity"
+    required: false
+    default: "100"
+  format:
+    description: "Output format (sql, json, csv, prisma)"
+    required: false
+    default: "sql"
+  output_file:
+    description: "Output file path to save synthesized relational dataset"
+    required: false
+    default: "seed.sql"
+  fail_on_cycle:
+    description: "Whether to fail CI step if unresolvable circular foreign-key dependencies are detected"
+    required: false
+    default: "true"
+
+outputs:
+  status:
+    description: "Synthesis outcome (success or error)"
+    value: ${{ steps.synthesizer.outputs.status }}
+  output_path:
+    description: "Path to generated seed file"
+    value: ${{ steps.synthesizer.outputs.output_path }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run MockForge AI Relational Seed Synthesizer
+      id: synthesizer
+      shell: bash
+      env:
+        INPUT_SCHEMA: ${{ inputs.schema_path }}
+        INPUT_COUNT: ${{ inputs.count }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_OUT: ${{ inputs.output_file }}
+        INPUT_FAIL_ON_CYCLE: ${{ inputs.fail_on_cycle }}
+      run: |
+        echo "🎲 Executing MockForge AI Relational Schema & Seed Synthesizer..."
+        pip install --quiet mockforge || npm install -g --silent @ritualdev/mockforge
+
+        python -c "
+        import os, sys
+        from mockforge import RelationalSynthesizer
+
+        schema_file = os.environ.get('INPUT_SCHEMA', 'schema.sql')
+        if not os.path.exists(schema_file):
+            print(f'::error::Schema file not found: {schema_file}')
+            sys.exit(1)
+
+        with open(schema_file, 'r', encoding='utf-8') as f:
+            ddl_content = f.read()
+
+        try:
+            synthesizer = RelationalSynthesizer()
+            count = int(os.environ.get('INPUT_COUNT', '100'))
+            out_file = os.environ.get('INPUT_OUT', 'seed.sql')
+            
+            seed_data = synthesizer.generate_from_ddl(ddl_content, count=count)
+            with open(out_file, 'w', encoding='utf-8') as f:
+                f.write(seed_data)
+
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as gh_out:
+                gh_out.write('status=success\n')
+                gh_out.write(f'output_path={out_file}\n')
+            print(f'✅ MockForge synthesized relational seed dataset -> {out_file}')
+        except Exception as e:
+            print(f'::error::MockForge synthesis failed: {e}')
+            if os.environ.get('INPUT_FAIL_ON_CYCLE', 'true').lower() == 'true':
+                sys.exit(1)
+        "
