@@ -12,7 +12,20 @@ export default defineConfig({
       formats: ['es', 'cjs']
     },
     rollupOptions: {
-      external: ['node:fs', 'node:path', 'node:crypto', 'node:util']
+      external: [
+        'node:fs',
+        'node:path',
+        'node:crypto',
+        'node:util',
+        'node:http',
+        'node:url',
+        'fs',
+        'path',
+        'crypto',
+        'util',
+        'http',
+        'url'
+      ]
     }
   }
 });

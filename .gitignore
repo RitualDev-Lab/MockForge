@@ -13,3 +13,4 @@ __pycache__/
 build/
 python/dist/
 python/build/
+*.tgz
