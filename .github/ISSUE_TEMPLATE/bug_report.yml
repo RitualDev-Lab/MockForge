@@ -1,0 +1,41 @@
+name: 🐛 Bug Report
+description: File a bug report for MockForge CLI, WASM engine, or Python SDK
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for reporting an issue! Please describe the problem clearly below.
+  - type: input
+    id: version
+    attributes:
+      label: MockForge Version / Package
+      placeholder: e.g. mockforge CLI v0.1.0, or mockforge-0.1.0 on Python 3.11
+    validations:
+      required: true
+  - type: dropdown
+    id: dialect
+    attributes:
+      label: Database Dialect / Schema Format
+      options:
+        - PostgreSQL
+        - MySQL / MariaDB
+        - SQLite
+        - Prisma Schema
+        - Raw DDL SQL
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: ddl_snippet
+    attributes:
+      label: DDL / Schema Snippet
+      description: Provide a minimal reproducible schema that demonstrates the issue (e.g. circular FK or unexpected type inference).
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Description
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
