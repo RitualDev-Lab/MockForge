@@ -1,0 +1,11 @@
+name = "mockforge-api"
+main = "worker.ts"
+compatibility_date = "2026-01-01"
+
+routes = [
+  { pattern = "api.mockforge.io/*", zone_name = "mockforge.io" }
+]
+
+[vars]
+ENVIRONMENT = "production"
+API_SECRET_KEY = "enterprise-mockforge-master-key"
