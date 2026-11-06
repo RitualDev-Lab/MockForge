@@ -7,3 +7,9 @@ release/
 .env
 .env.local
 coverage/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+python/dist/
+python/build/
