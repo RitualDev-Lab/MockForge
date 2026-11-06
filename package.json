@@ -1,0 +1,33 @@
+{
+  "name": "@ritualdev/mockforge",
+  "version": "0.1.0",
+  "description": "Enterprise Intelligent Relational Mock DB & Synthetic Test Data Engine (Postgres/MySQL/SQLite/Prisma)",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "vite build",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mock-database",
+    "synthetic-data",
+    "relational-generator",
+    "test-fixtures",
+    "postgres",
+    "mysql",
+    "sqlite",
+    "prisma",
+    "kahn-dag"
+  ],
+  "author": "RitualDev Studio <engineering@ritualdev.in>",
+  "license": "Proprietary",
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0"
+  }
+}
