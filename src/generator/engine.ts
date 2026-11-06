@@ -1,4 +1,5 @@
 import type { DatabaseSchema, TableDefinition, ForeignKeyReference } from '../types/schema.js';
+import type { SchemaSemanticProfiles, SchemaInferenceResult } from '../inference/types.js';
 import { DependencyGraph } from '../graph/dag.js';
 import { SeededPRNG } from './prng.js';
 import { GeneratorRegistry } from './registry.js';
@@ -10,6 +11,7 @@ export interface GenerationOptions {
   defaultRowCount?: number;
   rowCounts?: Record<string, number>; // Table name (case-insensitive) -> row count
   nullProbability?: number;
+  semanticProfiles?: SchemaSemanticProfiles | SchemaInferenceResult;
 }
 
 export interface RelationalDataset {
@@ -24,15 +26,27 @@ export class RelationalSynthesisEngine {
   private schema: DatabaseSchema;
   private prng: SeededPRNG;
   private pool: PrimaryKeyPool;
-  private options: Required<GenerationOptions>;
+  private options: Required<Omit<GenerationOptions, 'semanticProfiles'>> & {
+    semanticProfiles?: SchemaSemanticProfiles;
+  };
 
   constructor(schema: DatabaseSchema, options: GenerationOptions = {}) {
     this.schema = schema;
+    let profiles: SchemaSemanticProfiles | undefined;
+    if (options.semanticProfiles) {
+      if ('profiles' in options.semanticProfiles) {
+        profiles = options.semanticProfiles.profiles as SchemaSemanticProfiles;
+      } else {
+        profiles = options.semanticProfiles as SchemaSemanticProfiles;
+      }
+    }
+
     this.options = {
       seed: options.seed ?? 42,
       defaultRowCount: options.defaultRowCount ?? 50,
       rowCounts: options.rowCounts ?? {},
-      nullProbability: options.nullProbability ?? 0.05
+      nullProbability: options.nullProbability ?? 0.05,
+      semanticProfiles: profiles
     };
     this.prng = new SeededPRNG(this.options.seed);
     this.pool = new PrimaryKeyPool();
@@ -80,11 +94,16 @@ export class RelationalSynthesisEngine {
               );
             }
           } else {
+            // Check for AI or locally inferred semantic column profile
+            const tableProfiles = this.options.semanticProfiles?.[table.name.toLowerCase()];
+            const semanticProfile = tableProfiles?.[col.name.toLowerCase()] || null;
+
             // Generate contextual value via Generator Registry
             row[col.name] = GeneratorRegistry.generateValue(col, this.prng, {
               tableName: table.name,
               rowIndex,
-              currentRow: row
+              currentRow: row,
+              semanticProfile
             });
           }
         }

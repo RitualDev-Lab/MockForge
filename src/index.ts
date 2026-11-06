@@ -1,4 +1,5 @@
 export * from './types/schema.js';
+export * from './inference/types.js';
 export { SqlDdlParser } from './parser/sql-parser.js';
 export { PrismaSchemaParser } from './parser/prisma-parser.js';
 export { DependencyGraph } from './graph/dag.js';
@@ -11,11 +12,17 @@ export {
   type GenerationOptions,
   type RelationalDataset
 } from './generator/engine.js';
+export { LocalSemanticHeuristics } from './inference/local-heuristics.js';
+export { SchemaSemanticCache } from './inference/cache.js';
+export { GeminiInferenceClient } from './inference/gemini-client.js';
+export { SchemaSemanticResolver } from './inference/resolver.js';
 
 import { SqlDdlParser } from './parser/sql-parser.js';
 import { PrismaSchemaParser } from './parser/prisma-parser.js';
 import { RelationalSynthesisEngine, type GenerationOptions, type RelationalDataset } from './generator/engine.js';
+import { SchemaSemanticResolver } from './inference/resolver.js';
 import type { DatabaseSchema } from './types/schema.js';
+import type { InferenceOptions, SchemaInferenceResult } from './inference/types.js';
 
 /**
  * Universal schema parser that auto-detects SQL DDL vs Prisma schema
@@ -26,6 +33,17 @@ export function parseSchema(schemaText: string, format?: 'sql' | 'prisma'): Data
     return PrismaSchemaParser.parse(schemaText);
   }
   return SqlDdlParser.parse(schemaText);
+}
+
+/**
+ * Resolves cryptic schema columns using Gemini 1.5 Flash ($0 Free Tier) or Local Semantic Rules
+ */
+export async function inferSchemaSemantics(
+  schema: DatabaseSchema,
+  options?: InferenceOptions
+): Promise<SchemaInferenceResult> {
+  const resolver = new SchemaSemanticResolver(schema, options);
+  return resolver.resolve();
 }
 
 /**

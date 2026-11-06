@@ -1,5 +1,6 @@
 import type { SeededPRNG } from './prng.js';
 import type { ColumnDefinition } from '../types/schema.js';
+import type { SemanticColumnProfile } from '../inference/types.js';
 import { IdentityGenerator } from './generators/identity.js';
 import { FinanceGenerator } from './generators/finance.js';
 import { EcommerceGenerator } from './generators/ecommerce.js';
@@ -10,6 +11,7 @@ export interface RowGenerationContext {
   tableName: string;
   rowIndex: number;
   currentRow: Record<string, any>;
+  semanticProfile?: SemanticColumnProfile | null;
 }
 
 export class GeneratorRegistry {
@@ -36,6 +38,27 @@ export class GeneratorRegistry {
         return context.rowIndex + 1;
       }
       return prng.uuid();
+    }
+
+    // 2.5 Semantic Profile (Inferred via Gemini 1.5 Flash AI or Local Rules Engine)
+    if (context.semanticProfile) {
+      const prof = context.semanticProfile;
+
+      if (prof.enumOptions && prof.enumOptions.length > 0) {
+        return prng.pick(prof.enumOptions);
+      }
+
+      if (prof.range) {
+        if (col.normalizedType === 'integer' || col.normalizedType === 'bigint') {
+          return prng.int(prof.range.min, prof.range.max);
+        }
+        return prng.float(prof.range.min, prof.range.max, prof.range.precision ?? 2);
+      }
+
+      if (prof.suggestedGenerator) {
+        const val = this.dispatchSuggestedGenerator(prof.suggestedGenerator, prng, context);
+        if (val !== undefined) return val;
+      }
     }
 
     // 3. Name-Based Semantic Heuristics
@@ -221,6 +244,77 @@ export class GeneratorRegistry {
 
       default:
         return `${col.name}_sample`;
+    }
+  }
+
+  private static dispatchSuggestedGenerator(
+    generatorName: string,
+    prng: SeededPRNG,
+    context: RowGenerationContext
+  ): any {
+    switch (generatorName) {
+      case 'identity.first_name':
+        return IdentityGenerator.firstName(prng);
+      case 'identity.last_name':
+        return IdentityGenerator.lastName(prng);
+      case 'identity.name':
+        return IdentityGenerator.fullName(prng);
+      case 'identity.email':
+        return IdentityGenerator.email(prng, context.currentRow.username || context.currentRow.user_name);
+      case 'identity.phone':
+        return IdentityGenerator.phone(prng);
+      case 'identity.avatar':
+        return IdentityGenerator.avatarUrl(prng);
+      case 'identity.ssn':
+        return IdentityGenerator.ssn(prng);
+      case 'finance.credit_card':
+        return FinanceGenerator.creditCard(prng);
+      case 'finance.cvv':
+        return FinanceGenerator.cvv(prng);
+      case 'finance.currency':
+        return FinanceGenerator.currency(prng);
+      case 'finance.amount':
+        return FinanceGenerator.price(prng, 10, 500);
+      case 'finance.tax_rate':
+        return FinanceGenerator.taxRate(prng);
+      case 'finance.stripe_customer_id':
+        return FinanceGenerator.stripeCustomerId(prng);
+      case 'finance.stripe_payment_id':
+        return FinanceGenerator.stripePaymentIntentId(prng);
+      case 'finance.iban':
+        return FinanceGenerator.iban(prng);
+      case 'ecommerce.product':
+        return EcommerceGenerator.productName(prng);
+      case 'ecommerce.sku':
+        return EcommerceGenerator.sku(prng);
+      case 'ecommerce.order_number':
+        return EcommerceGenerator.orderNumber(prng);
+      case 'ecommerce.company':
+        return EcommerceGenerator.company(prng);
+      case 'ecommerce.job_title':
+        return EcommerceGenerator.jobTitle(prng);
+      case 'ecommerce.department':
+        return EcommerceGenerator.department(prng);
+      case 'geo.address':
+        return GeoGenerator.streetAddress(prng);
+      case 'geo.city':
+        return GeoGenerator.city(prng);
+      case 'geo.state':
+        return GeoGenerator.state(prng).name;
+      case 'geo.country':
+        return GeoGenerator.country(prng).name;
+      case 'geo.postal_code':
+        return GeoGenerator.zipCode(prng);
+      case 'geo.latitude':
+        return GeoGenerator.latitude(prng);
+      case 'geo.longitude':
+        return GeoGenerator.longitude(prng);
+      case 'geo.ipv4':
+        return GeoGenerator.ipv4(prng);
+      case 'geo.mac':
+        return GeoGenerator.macAddress(prng);
+      default:
+        return undefined;
     }
   }
 }

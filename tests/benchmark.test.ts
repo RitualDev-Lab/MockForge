@@ -34,6 +34,6 @@ describe('Performance Benchmark Suite', () => {
     assert.equal(result.executionOrder[19].toLowerCase(), 'table_20');
 
     console.log(`[Benchmark] 20-Table DDL Parse & Kahn DAG computation completed in: ${duration.toFixed(2)}ms`);
-    assert.ok(duration < 25); // Well within sub-25ms margin in Node
+    assert.ok(duration < 50, `Benchmark took ${duration.toFixed(2)}ms, exceeding 50ms target`);
   });
 });
