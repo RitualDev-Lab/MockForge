@@ -6,7 +6,11 @@
   "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "mockforge": "./bin/mockforge.js"
+  },
   "scripts": {
+    "dev": "vite src/ui",
     "build": "vite build",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"

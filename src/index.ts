@@ -20,6 +20,8 @@ export * from './exporters/index.js';
 export * from './wasm/types.js';
 export { InMemoryMockDatabase } from './wasm/memory-db.js';
 export { MockDatabaseBridge, createMockDatabase } from './wasm/pglite-bridge.js';
+export * from './licensing/commercial.js';
+export { MockForgeCli, type CliArgs } from './cli/index.js';
 
 import { SqlDdlParser } from './parser/sql-parser.js';
 import { PrismaSchemaParser } from './parser/prisma-parser.js';

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MockForge AI — Enterprise Relational Mock DB Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0d1117;
+      --bg-surface: #161b22;
+      --bg-surface-elevated: #21262d;
+      --border-color: #30363d;
+      --accent: #58a6ff;
+      --accent-hover: #79b8ff;
+      --accent-green: #238636;
+      --accent-green-hover: #2ea043;
+      --accent-purple: #a371f7;
+      --text-primary: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --text-muted: #8b949e;
+      --code-bg: #0b0f14;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #a371f7 0%, #58a6ff 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-bright);
+      letter-spacing: -0.3px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-free {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .badge-wasm {
+      background: rgba(35, 134, 54, 0.15);
+      color: #3fb950;
+      border: 1px solid rgba(35, 134, 54, 0.3);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .btn-primary {
+      background: var(--accent-green);
+      color: white;
+      border-color: rgba(240, 246, 252, 0.1);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-green-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-bright);
+      border-color: var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: #30363d;
+      border-color: #8b949e;
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: grid;
+      grid-template-columns: 380px 1fr 480px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 17, 23, 0.6);
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Left Panel: Schema Input */
+    .schema-textarea {
+      flex: 1;
+      width: 100%;
+      background: var(--code-bg);
+      color: #79c0ff;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      padding: 16px;
+      border: none;
+      outline: none;
+      resize: none;
+      line-height: 1.5;
+    }
+
+    .config-box {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-select {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-bright);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    /* Middle Panel: Visual ER Diagram Canvas */
+    .er-canvas-container {
+      position: relative;
+      flex: 1;
+      background: radial-gradient(circle, #1f242c 10%, transparent 11%);
+      background-size: 24px 24px;
+      background-color: var(--code-bg);
+      overflow: auto;
+      padding: 24px;
+    }
+
+    .dag-bar {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      overflow-x: auto;
+    }
+
+    .dag-step {
+      background: var(--bg-surface-elevated);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .dag-arrow {
+      color: var(--text-muted);
+    }
+
+    /* ER Table Node */
+    .er-node {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: inline-block;
+      min-width: 260px;
+      margin-right: 20px;
+      vertical-align: top;
+    }
+
+    .er-node-header {
+      background: var(--bg-surface-elevated);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .er-node-col {
+      padding: 6px 12px;
+      font-size: 12px;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(48, 54, 61, 0.4);
+    }
+
+    .er-node-col:last-child {
+      border-bottom: none;
+    }
+
+    .pk-badge {
+      color: #e3b341;
+      font-weight: 700;
+      font-size: 10px;
+      margin-right: 6px;
+    }
+
+    .fk-badge {
+      color: var(--accent-purple);
+      font-weight: 700;
+      font-size: 10px;
+      margin-right: 6px;
+    }
+
+    .col-type {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    /* Right Panel: Data Grid & Query Console */
+    .data-tabs {
+      display: flex;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .data-tab {
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+    }
+
+    .data-tab.active {
+      color: var(--text-bright);
+      border-bottom-color: var(--accent);
+      background: rgba(88, 166, 255, 0.05);
+    }
+
+    .data-grid-container {
+      flex: 1;
+      overflow: auto;
+      background: var(--code-bg);
+    }
+
+    table.data-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    table.data-grid th {
+      position: sticky;
+      top: 0;
+      background: var(--bg-surface-elevated);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-bright);
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    table.data-grid td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+      color: #c9d1d9;
+    }
+
+    table.data-grid tr:hover td {
+      background: rgba(88, 166, 255, 0.06);
+    }
+
+    /* SQL Query Console */
+    .sql-console {
+      height: 220px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sql-editor-input {
+      flex: 1;
+      background: var(--code-bg);
+      color: #a5d6ff;
+      border: none;
+      padding: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      resize: none;
+      outline: none;
+    }
+
+    .sql-actions {
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      width: 600px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .export-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--code-bg);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .export-card:hover {
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">MF</div>
+      <div>
+        <div class="brand-title">MockForge AI Studio</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Relational Test Data & In-Browser Mock Database</div>
+      </div>
+      <span class="badge badge-free">Community Edition ($0)</span>
+      <span class="badge badge-wasm">⚡ In-Memory WASM Engine</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="openExportModal()">
+        <span>💾 Export Relational Scripts</span>
+      </button>
+      <button class="btn btn-primary" id="btn-forge" onclick="handleForge()">
+        <span>⚡ Forge Synthetic DB</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="workspace">
+
+    <!-- Left Panel: DDL Schema Editor -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📄 Schema DDL Studio</div>
+        <select class="form-select" id="sample-select" onchange="loadSampleSchema(this.value)">
+          <option value="fintech">Fintech & Payments</option>
+          <option value="ecommerce">E-Commerce Store</option>
+          <option value="saas">B2B SaaS Subscriptions</option>
+        </select>
+      </div>
+
+      <textarea class="schema-textarea" id="schema-input" spellcheck="false"></textarea>
+
+      <div class="config-box">
+        <div class="form-group">
+          <label class="form-label">Rows per Table</label>
+          <input type="number" class="form-input" id="row-count-input" value="30" min="5" max="10000">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Deterministic PRNG Seed</label>
+          <input type="number" class="form-input" id="seed-input" value="42">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gemini 1.5 Flash API Key ($0 Free Tier - Optional)</label>
+          <input type="password" class="form-input" id="api-key-input" placeholder="AIzaSy... (leave blank for local rules)">
+          <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+            🔒 Zero-Plaintext Rule: Only schema structure is sent, zero data stored.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Middle Panel: Visual ER Diagram -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">🕸️ Relational Topology & ER Canvas</div>
+        <div id="stat-tables" style="font-size: 12px; color: var(--text-muted);">0 tables</div>
+      </div>
+
+      <div class="dag-bar" id="dag-container">
+        <span style="color: var(--text-muted);">Execution sequence will appear here...</span>
+      </div>
+
+      <div class="er-canvas-container" id="er-canvas">
+        <!-- Interactive ER nodes injected here -->
+      </div>
+    </div>
+
+    <!-- Right Panel: Data Grid & Live SQL Console -->
+    <div class="panel" style="border-right: none;">
+      <div class="panel-header">
+        <div class="panel-title">📊 Live Data Grid & Query Console</div>
+        <div id="stat-rows" style="font-size: 12px; color: var(--text-muted);">0 records</div>
+      </div>
+
+      <div class="data-tabs" id="table-tabs">
+        <!-- Tabs injected here -->
+      </div>
+
+      <div class="data-grid-container" id="grid-container">
+        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+          Click <strong>⚡ Forge Synthetic DB</strong> to generate coherent test data.
+        </div>
+      </div>
+
+      <!-- In-Browser SQL Query Console -->
+      <div class="sql-console">
+        <div class="panel-header" style="padding: 6px 12px;">
+          <div class="panel-title" style="font-size: 11px;">⚡ In-Browser SQL Query Runner</div>
+          <div id="query-time-badge" style="font-size: 11px; color: #3fb950;"></div>
+        </div>
+        <textarea class="sql-editor-input" id="sql-input" placeholder="SELECT * FROM users JOIN orders ON users.id = orders.user_id LIMIT 10;"></textarea>
+        <div class="sql-actions">
+          <span style="font-size: 11px; color: var(--text-muted);">Runs in browser memory ($0 cost)</span>
+          <button class="btn btn-secondary" style="padding: 4px 12px;" onclick="handleRunQuery()">Run SQL</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Export Dialog Modal -->
+  <div class="modal-overlay" id="export-modal" onclick="closeExportModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 style="font-size: 16px; color: var(--text-bright);">Export Relational Mock Data</h3>
+        <button style="background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer;" onclick="closeExportModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="export-card" onclick="triggerDownload('postgres')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">PostgreSQL Script (.sql)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Transactional batch INSERTs with sequence resets</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('postgres-copy')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">PostgreSQL High-Speed COPY (.sql)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Streaming COPY FROM stdin (10x faster bulk import)</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('mysql')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">MySQL Dump (.sql)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Backtick quoted statements with FK checks disabled</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('sqlite')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">SQLite Seed (.sql)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">PRAGMA foreign keys disabled transaction block</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('prisma')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">Prisma ORM Seed Script (prisma/seed.ts)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Turnkey TypeScript script using @prisma/client</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('drizzle')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">Drizzle ORM Seed Script (drizzle/seed.ts)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Type-safe seed script using db.insert()</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+
+        <div class="export-card" onclick="triggerDownload('json')">
+          <div>
+            <div style="font-weight: 600; color: var(--text-bright);">Relational JSON Bundle (.json)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Unified relational database JSON fixture bundle</div>
+          </div>
+          <button class="btn btn-secondary">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { parseSchema, synthesizeMockData, exportDataset, InMemoryMockDatabase } from '../index.js';
+
+    // Sample Schemas
+    const SAMPLES = {
+      fintech: `CREATE TABLE accounts (
+  id UUID PRIMARY KEY,
+  org_nm VARCHAR(150) NOT NULL,
+  acct_tier VARCHAR(30) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE users (
+  id UUID PRIMARY KEY,
+  account_id UUID NOT NULL REFERENCES accounts(id),
+  c_fname VARCHAR(100) NOT NULL,
+  c_lname VARCHAR(100) NOT NULL,
+  c_eml VARCHAR(150) NOT NULL,
+  kyc_st VARCHAR(30) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE payments (
+  id UUID PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES users(id),
+  tx_st_cd VARCHAR(25) NOT NULL,
+  pay_mthd VARCHAR(30) NOT NULL,
+  mrr_cents INT NOT NULL,
+  ip_orig VARCHAR(45) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL
+);`,
+      ecommerce: `CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  category_name VARCHAR(100) NOT NULL,
+  slug VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE products (
+  id UUID PRIMARY KEY,
+  category_id INT NOT NULL REFERENCES categories(id),
+  product_name VARCHAR(200) NOT NULL,
+  sku VARCHAR(50) NOT NULL,
+  unit_price NUMERIC(10, 2) NOT NULL
+);
+
+CREATE TABLE customers (
+  id UUID PRIMARY KEY,
+  full_name VARCHAR(150) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  city VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE orders (
+  id UUID PRIMARY KEY,
+  customer_id UUID NOT NULL REFERENCES customers(id),
+  status VARCHAR(50) NOT NULL,
+  total_amount NUMERIC(10, 2) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL
+);`,
+      saas: `CREATE TABLE organizations (
+  id UUID PRIMARY KEY,
+  company_name VARCHAR(150) NOT NULL,
+  plan_tier VARCHAR(50) NOT NULL,
+  mrr_cents INT NOT NULL
+);
+
+CREATE TABLE members (
+  id UUID PRIMARY KEY,
+  org_id UUID NOT NULL REFERENCES organizations(id),
+  full_name VARCHAR(150) NOT NULL,
+  work_email VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL
+);`
+    };
+
+    let currentSchema = null;
+    let currentDataset = null;
+    let mockDb = null;
+    let activeTable = null;
+
+    window.loadSampleSchema = function(key) {
+      document.getElementById('schema-input').value = SAMPLES[key] || SAMPLES.fintech;
+    };
+
+    window.handleForge = async function() {
+      const btn = document.getElementById('btn-forge');
+      btn.innerText = '⚙️ Generating...';
+      btn.disabled = true;
+
+      try {
+        const schemaText = document.getElementById('schema-input').value;
+        const rowCount = parseInt(document.getElementById('row-count-input').value, 10) || 30;
+        const seed = parseInt(document.getElementById('seed-input').value, 10) || 42;
+        const apiKey = document.getElementById('api-key-input').value.trim();
+
+        currentSchema = parseSchema(schemaText);
+        currentDataset = synthesizeMockData(currentSchema, {
+          seed,
+          defaultRowCount: rowCount
+        });
+
+        mockDb = new InMemoryMockDatabase(currentSchema, currentDataset);
+
+        renderDag(currentDataset.executionOrder);
+        renderErDiagram(currentSchema);
+        renderTabs(currentDataset);
+
+        activeTable = currentDataset.executionOrder[0];
+        renderDataGrid(activeTable);
+
+        document.getElementById('stat-tables').innerText = `${currentSchema.tables.length} tables`;
+        document.getElementById('stat-rows').innerText = `${currentDataset.totalRows.toLocaleString()} rows (${currentDataset.durationMs.toFixed(1)}ms)`;
+
+        // Set sample query
+        const firstTbl = currentDataset.executionOrder[0];
+        document.getElementById('sql-input').value = `SELECT * FROM ${firstTbl} LIMIT 10;`;
+      } catch (err) {
+        alert('Synthesis Error: ' + err.message);
+      } finally {
+        btn.innerText = '⚡ Forge Synthetic DB';
+        btn.disabled = false;
+      }
+    };
+
+    function renderDag(order) {
+      const container = document.getElementById('dag-container');
+      container.innerHTML = '';
+      order.forEach((tbl, idx) => {
+        const step = document.createElement('span');
+        step.className = 'dag-step';
+        step.innerText = `${idx + 1}. ${tbl}`;
+        container.appendChild(step);
+        if (idx < order.length - 1) {
+          const arrow = document.createElement('span');
+          arrow.className = 'dag-arrow';
+          arrow.innerHTML = '&rarr;';
+          container.appendChild(arrow);
+        }
+      });
+    }
+
+    function renderErDiagram(schema) {
+      const canvas = document.getElementById('er-canvas');
+      canvas.innerHTML = '';
+
+      schema.tables.forEach((table) => {
+        const node = document.createElement('div');
+        node.className = 'er-node';
+
+        let colsHtml = '';
+        table.columns.forEach((col) => {
+          const pkBadge = col.isPrimaryKey ? '<span class="pk-badge">PK</span>' : '';
+          const fkBadge = col.foreignKey ? '<span class="fk-badge">FK</span>' : '';
+          colsHtml += `
+            <div class="er-node-col">
+              <div>${pkBadge}${fkBadge}${col.name}</div>
+              <div class="col-type">${col.rawType}</div>
+            </div>
+          `;
+        });
+
+        node.innerHTML = `
+          <div class="er-node-header">
+            <span>${table.name}</span>
+            <span style="font-size: 10px; color: var(--text-muted);">${table.columns.length} cols</span>
+          </div>
+          ${colsHtml}
+        `;
+        canvas.appendChild(node);
+      });
+    }
+
+    function renderTabs(dataset) {
+      const tabs = document.getElementById('table-tabs');
+      tabs.innerHTML = '';
+      dataset.executionOrder.forEach((tbl, idx) => {
+        const tab = document.createElement('div');
+        tab.className = 'data-tab' + (idx === 0 ? ' active' : '');
+        tab.innerText = `${tbl} (${dataset.tables[tbl].length})`;
+        tab.onclick = () => {
+          document.querySelectorAll('.data-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeTable = tbl;
+          renderDataGrid(tbl);
+        };
+        tabs.appendChild(tab);
+      });
+    }
+
+    function renderDataGrid(tableName) {
+      const container = document.getElementById('grid-container');
+      const rows = currentDataset?.tables[tableName] || [];
+
+      if (rows.length === 0) {
+        container.innerHTML = '<div style="padding: 40px; color: var(--text-muted);">No records found.</div>';
+        return;
+      }
+
+      const cols = Object.keys(rows[0]);
+      let ths = cols.map(c => `<th>${c}</th>`).join('');
+      let trs = rows.slice(0, 100).map(r => {
+        const tds = cols.map(c => `<td>${escapeHtml(r[c])}</td>`).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <table class="data-grid">
+          <thead><tr>${ths}</tr></thead>
+          <tbody>${trs}</tbody>
+        </table>
+      `;
+    }
+
+    window.handleRunQuery = function() {
+      if (!mockDb) {
+        alert('Please forge a synthetic database first!');
+        return;
+      }
+
+      const sql = document.getElementById('sql-input').value.trim();
+      try {
+        const res = mockDb.query(sql);
+        document.getElementById('query-time-badge').innerText = `✓ ${res.rowCount} rows in ${res.durationMs.toFixed(2)}ms`;
+
+        // Render query results
+        const container = document.getElementById('grid-container');
+        if (res.rows.length === 0) {
+          container.innerHTML = '<div style="padding: 40px; color: var(--text-muted);">Query returned 0 rows.</div>';
+          return;
+        }
+
+        const cols = res.columns.length > 0 ? res.columns : Object.keys(res.rows[0]);
+        let ths = cols.map(c => `<th>${c}</th>`).join('');
+        let trs = res.rows.map(r => {
+          const tds = cols.map(c => `<td>${escapeHtml(r[c])}</td>`).join('');
+          return `<tr>${tds}</tr>`;
+        }).join('');
+
+        container.innerHTML = `
+          <table class="data-grid">
+            <thead><tr>${ths}</tr></thead>
+            <tbody>${trs}</tbody>
+          </table>
+        `;
+      } catch (err) {
+        alert('SQL Query Error: ' + err.message);
+      }
+    };
+
+    window.openExportModal = function() {
+      if (!currentDataset) {
+        alert('Please forge mock data first before exporting.');
+        return;
+      }
+      document.getElementById('export-modal').style.display = 'flex';
+    };
+
+    window.closeExportModal = function() {
+      document.getElementById('export-modal').style.display = 'none';
+    };
+
+    window.triggerDownload = function(format) {
+      const bundle = exportDataset(currentDataset, currentSchema, { format });
+      const file = bundle.primaryFile;
+
+      const blob = new Blob([file.content], { type: file.mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      closeExportModal();
+    };
+
+    function escapeHtml(val) {
+      if (val === null || val === undefined) return '<span style="color:#6e7681">NULL</span>';
+      return String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Initialize with default sample
+    loadSampleSchema('fintech');
+  </script>
+</body>
+</html>
