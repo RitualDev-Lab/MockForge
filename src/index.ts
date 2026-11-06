@@ -16,6 +16,10 @@ export { LocalSemanticHeuristics } from './inference/local-heuristics.js';
 export { SchemaSemanticCache } from './inference/cache.js';
 export { GeminiInferenceClient } from './inference/gemini-client.js';
 export { SchemaSemanticResolver } from './inference/resolver.js';
+export * from './exporters/index.js';
+export * from './wasm/types.js';
+export { InMemoryMockDatabase } from './wasm/memory-db.js';
+export { MockDatabaseBridge, createMockDatabase } from './wasm/pglite-bridge.js';
 
 import { SqlDdlParser } from './parser/sql-parser.js';
 import { PrismaSchemaParser } from './parser/prisma-parser.js';
