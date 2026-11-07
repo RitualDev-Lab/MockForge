@@ -100,7 +100,7 @@ export function anonymizeCsvData(
 export function createMockForgeMcpServer(): McpServer {
   const server = new McpServer({
     name: 'io.github.RitualDev-Lab/mockforge',
-    version: '0.1.1'
+    version: '0.1.2'
   });
 
   // Tool 1: mockforge_synthesize_fixtures

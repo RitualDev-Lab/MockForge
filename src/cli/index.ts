@@ -20,7 +20,7 @@ export interface CliArgs {
 }
 
 export class MockForgeCli {
-  static readonly VERSION = '0.1.1';
+  static readonly VERSION = '0.1.2';
 
   /**
    * Main CLI entrypoint
@@ -219,6 +219,8 @@ export class MockForgeCli {
         args.sql = tokens[++i];
       } else if (!t.startsWith('-') && !args.command) {
         args.command = t;
+      } else if (!t.startsWith('-') && !args.schema) {
+        args.schema = t;
       }
       i++;
     }

@@ -1,6 +1,6 @@
 {
   "name": "@ritualdev-lab/mockforge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "mcpName": "io.github.RitualDev-Lab/mockforge",
   "description": "Enterprise Intelligent Relational Mock DB & Synthetic Test Data Engine (Postgres/MySQL/SQLite/Prisma)",
   "type": "module",
