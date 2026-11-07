@@ -1,17 +1,30 @@
 {
-  "name": "@ritualdev/mockforge",
+  "name": "@ritualdev-lab/mockforge",
   "version": "0.1.0",
   "description": "Enterprise Intelligent Relational Mock DB & Synthetic Test Data Engine (Postgres/MySQL/SQLite/Prisma)",
   "type": "module",
-  "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "mockforge": "./bin/mockforge.js"
+    "mockforge": "bin/mockforge.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RitualDev-Lab/MockForge.git"
+  },
+  "homepage": "https://ritualdev.in/mockforge",
   "scripts": {
     "dev": "vite src/ui",
-    "build": "vite build",
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
@@ -27,7 +40,7 @@
     "kahn-dag"
   ],
   "author": "RitualDev Studio <engineering@ritualdev.in>",
-  "license": "Proprietary",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^22.13.0",
     "tsx": "^4.19.2",
