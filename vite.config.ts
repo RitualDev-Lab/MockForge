@@ -13,18 +13,19 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        'node:fs',
-        'node:path',
-        'node:crypto',
-        'node:util',
-        'node:http',
-        'node:url',
+        /^node:/,
+        /^@modelcontextprotocol/,
+        /^zod/,
         'fs',
         'path',
         'crypto',
         'util',
+        'os',
+        'stream',
+        'events',
         'http',
-        'url'
+        'url',
+        'readline'
       ]
     }
   }

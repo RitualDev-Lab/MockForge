@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.RitualDev-Lab/mockforge",
+  "title": "MockForge AI Relational Mock Database & Fixture Generator",
+  "description": "Zero-cost relational mock DB and synthetic fixture generator with Kahn DAG integrity for AI agents",
+  "version": "0.1.1",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/RitualDev-Lab/MockForge",
+    "source": "github"
+  },
+  "website": "https://ritualdev.in/mockforge",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@ritualdev-lab/mockforge",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

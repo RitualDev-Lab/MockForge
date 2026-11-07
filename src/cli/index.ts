@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
-import { parseSchema, synthesizeMockData, inferSchemaSemantics } from '../index.js';
+import { parseSchema, synthesizeMockData, inferSchemaSemantics, runMockForgeMcpServer } from '../index.js';
 import { exportDataset, type ExportFormat } from '../exporters/index.js';
 import { LicenseManager } from '../licensing/commercial.js';
 import { InMemoryMockDatabase } from '../wasm/memory-db.js';
@@ -20,7 +20,7 @@ export interface CliArgs {
 }
 
 export class MockForgeCli {
-  static readonly VERSION = '0.1.0';
+  static readonly VERSION = '0.1.1';
 
   /**
    * Main CLI entrypoint
@@ -48,6 +48,11 @@ export class MockForgeCli {
 
         case 'query':
           return await this.handleQuery(args);
+
+        case 'mcp':
+        case 'serve':
+          await runMockForgeMcpServer();
+          return 0;
 
         default:
           console.error(`Unknown command: '${args.command}'. Run 'mockforge --help' for usage.`);
@@ -233,6 +238,7 @@ COMMANDS:
   generate    Synthesizes relational mock data from SQL or Prisma schema
   infer       Infers semantic column profiles (Gemini 1.5 Flash / Local Rules)
   query       Executes an interactive SQL query against mock data in terminal
+  mcp         Starts Model Context Protocol (MCP) stdio server
   help        Prints this help screen
 
 OPTIONS:

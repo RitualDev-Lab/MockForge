@@ -25,6 +25,12 @@ export { MockForgeCli, type CliArgs } from './cli/index.js';
 export * from './anonymizer/database-masker.js';
 export { EphemeralMockServer, type MockServerOptions } from './server/mock-server.js';
 export * from './orm/synchronizer.js';
+export {
+  createMockForgeMcpServer,
+  runMockForgeMcpServer,
+  anonymizeCsvData,
+  type CsvAnonymizeResult
+} from './mcp/index.js';
 
 import { SqlDdlParser } from './parser/sql-parser.js';
 import { PrismaSchemaParser } from './parser/prisma-parser.js';

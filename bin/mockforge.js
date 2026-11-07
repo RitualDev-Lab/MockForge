@@ -2,7 +2,12 @@
 
 import { MockForgeCli } from '../dist/index.js';
 
-MockForgeCli.run(process.argv)
+const rawArgs = process.argv.slice(2);
+const argv = (rawArgs.length === 0 && !process.stdin.isTTY)
+  ? [process.argv[0], process.argv[1], 'mcp']
+  : process.argv;
+
+MockForgeCli.run(argv)
   .then((exitCode) => {
     process.exit(exitCode);
   })
