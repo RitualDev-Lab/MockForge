@@ -1,7 +1,8 @@
-# 🎲 MockForge AI — Enterprise Relational Mock DB & Synthetic Test Data Engine
+﻿# 🎲 MockForge AI — Enterprise Relational Mock DB & Synthetic Test Data Engine
 
 [![Architecture: Client-Side](https://img.shields.io/badge/Architecture-100%25%20In--Browser%20WASM-00F59B?style=for-the-badge)](https://ritualdev.in)
 [![Dialects](https://img.shields.io/badge/Dialects-Postgres%20%7C%20MySQL%20%7C%20SQLite%20%7C%20Prisma-blue?style=for-the-badge)](https://ritualdev.in)
+[![Sponsor on Dodo Payments](https://img.shields.io/badge/Sponsor-Dodo%20Payments-8b5cf6?style=for-the-badge&logo=shield&logoColor=white)](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva)
 [![DAG Resolution](https://img.shields.io/badge/DAG-Kahn's%20Algorithm-purple?style=for-the-badge)](https://ritualdev.in)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-yellow.svg?style=for-the-badge)](https://ritualdev.in)
 
@@ -32,6 +33,26 @@ npm run build
 ```
 
 ---
+
+---
+
+## 💖 Sponsor & Support via Dodo Payments
+
+MockForge is engineered by RitualDev Lab. Your sponsorship directly finances our client-side WebAssembly SQLite/PGlite test runners, synthetic data generation algorithms, and multi-dialect schema fixture tooling.
+
+<div align="center">
+
+[![Sponsor on Dodo Payments](https://img.shields.io/badge/Sponsor_via_Dodo-Payments-8b5cf6?style=for-the-badge&logo=shield&logoColor=white)](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva)
+[![Interactive Donation Portal](https://img.shields.io/badge/Donation_Portal-Cards%20%7C%20UPI%20%7C%20Apple%20Pay-ff5964?style=for-the-badge&logo=heart&logoColor=white)](https://ritualdev.in/donate)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-RitualDev--Lab-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/RitualDev-Lab)
+
+<br/>
+
+[**⚡ 1-Click Dodo Payments Checkout**](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva) &nbsp;•&nbsp; [**🎁 Interactive Donation Form (USD & INR UPI)**](https://ritualdev.in/donate) &nbsp;•&nbsp; [**❤️ GitHub Sponsors**](https://github.com/sponsors/RitualDev-Lab)
+
+<sub>🔒 *Zero physical shipping required. Powered by Dodo Payments (Merchant of Record) with instant tax invoice and global payment methods (Cards, UPI, Apple Pay).*</sub>
+
+</div>
 
 ## 📄 License
 
