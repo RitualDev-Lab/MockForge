@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # 🎲 MockForge AI
 ### Intelligent In-Browser Relational Mock DB & Seed Data Synthesizer
@@ -155,6 +155,26 @@ console.log(`Generated ${result.totalRows} rows across ${result.tables.length} t
 * **Test Verification**: **58 / 58 passing tests** across Node.js, WebAssembly, and Python 3.8+.
 
 ---
+
+---
+
+## 💖 Sponsor & Support via Dodo Payments
+
+MockForge is engineered by RitualDev Lab. Your sponsorship directly finances our client-side WebAssembly SQLite/PGlite test runners, synthetic data generation algorithms, and multi-dialect schema fixture tooling.
+
+<div align="center">
+
+[![Sponsor on Dodo Payments](https://img.shields.io/badge/Sponsor_via_Dodo-Payments-8b5cf6?style=for-the-badge&logo=shield&logoColor=white)](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva)
+[![Interactive Donation Portal](https://img.shields.io/badge/Donation_Portal-Cards%20%7C%20UPI%20%7C%20Apple%20Pay-ff5964?style=for-the-badge&logo=heart&logoColor=white)](https://ritualdev.in/donate)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-RitualDev--Lab-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/RitualDev-Lab)
+
+<br/>
+
+[**⚡ 1-Click Dodo Payments Checkout**](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva) &nbsp;•&nbsp; [**🎁 Interactive Donation Form (USD & INR UPI)**](https://ritualdev.in/donate) &nbsp;•&nbsp; [**❤️ GitHub Sponsors**](https://github.com/sponsors/RitualDev-Lab)
+
+<sub>🔒 *Zero physical shipping required. Powered by Dodo Payments (Merchant of Record) with instant tax invoice and global payment methods (Cards, UPI, Apple Pay).*</sub>
+
+</div>
 
 ## 🤝 Community & Support
 
