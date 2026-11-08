@@ -1,13 +1,37 @@
+import { createHash } from "node:crypto";
+
 /**
  * Seeded Pseudorandom Number Generator (Mulberry32) with Statistical Distributions
- * Guarantees 100% reproducible synthetic database generation across machines
+ * and Cryptographic SHA-256 Seed-Locking.
+ * Guarantees 100% reproducible synthetic database generation across machines and processes.
  */
-
 export class SeededPRNG {
   private state: number;
 
-  constructor(seed: number = 42) {
-    this.state = seed >>> 0;
+  constructor(seed: number | string = 42) {
+    if (typeof seed === "string") {
+      const hash = createHash("sha256").update(seed).digest();
+      this.state = hash.readUInt32BE(0) >>> 0;
+    } else {
+      this.state = seed >>> 0;
+    }
+  }
+
+  /**
+   * Factory constructor accepting either numeric or cryptographic string seeds.
+   */
+  static fromSeed(seed: number | string): SeededPRNG {
+    return new SeededPRNG(seed);
+  }
+
+  /**
+   * Derives an isolated child PRNG deterministically bound to a sub-domain (e.g. table, column)
+   */
+  deriveChild(domain: string): SeededPRNG {
+    const hash = createHash("sha256")
+      .update(`${this.state}:${domain}`)
+      .digest();
+    return new SeededPRNG(hash.readUInt32BE(0));
   }
 
   /**

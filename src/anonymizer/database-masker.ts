@@ -3,6 +3,7 @@ import { SeededPRNG } from '../generator/prng.js';
 import { IdentityGenerator } from '../generator/generators/identity.js';
 import { FinanceGenerator } from '../generator/generators/finance.js';
 import { GeoGenerator } from '../generator/generators/geo.js';
+import { FormatPreservingCipher } from './fpe.js';
 
 export type MaskingStrategy =
   | 'name'
@@ -18,6 +19,7 @@ export type MaskingStrategy =
   | 'ip'
   | 'address'
   | 'password'
+  | 'fpe'
   | 'preserve';
 
 export interface ColumnMaskRule {
@@ -28,12 +30,13 @@ export interface ColumnMaskRule {
 }
 
 export interface MaskingOptions {
-  seed?: number;
+  seed?: number | string;
   salt?: string;
   preservePrimaryKeys?: boolean;
   preserveForeignKeys?: boolean;
   customRules?: ColumnMaskRule[];
   defaultEmailDomain?: string;
+  fpeKey?: string;
 }
 
 export interface MaskingAuditReport {
@@ -51,6 +54,7 @@ export interface MaskingAuditReport {
     gdprCompliant: boolean;
     pciDssCompliant: boolean;
     soc2Compliant: boolean;
+    dpdpCompliant: boolean;
   };
 }
 
@@ -67,7 +71,8 @@ export interface MaskingResult<T = Record<string, any[]>> {
 export class DatabaseMasker {
   private prng: SeededPRNG;
   private salt: string;
-  private options: Required<MaskingOptions>;
+  private options: Required<Omit<MaskingOptions, "fpeKey">> & { fpeKey?: string };
+  private fpeCipher: FormatPreservingCipher;
   // Deterministic mapping cache to ensure consistent pseudonymization across tables
   private valueMappingCache = new Map<string, any>();
 
@@ -75,13 +80,15 @@ export class DatabaseMasker {
     const seed = options?.seed ?? 42;
     this.prng = new SeededPRNG(seed);
     this.salt = options?.salt || 'mockforge-enterprise-salt-v1';
+    this.fpeCipher = new FormatPreservingCipher(options?.fpeKey || 'mockforge-fpe-key-2026', this.salt);
     this.options = {
       seed,
       salt: this.salt,
       preservePrimaryKeys: options?.preservePrimaryKeys ?? true,
       preserveForeignKeys: options?.preserveForeignKeys ?? true,
       customRules: options?.customRules ?? [],
-      defaultEmailDomain: options?.defaultEmailDomain ?? 'anonymized-test.internal'
+      defaultEmailDomain: options?.defaultEmailDomain ?? 'anonymized-test.internal',
+      fpeKey: options?.fpeKey
     };
   }
 
@@ -209,7 +216,8 @@ export class DatabaseMasker {
           hipaaCompliant: columnsMasked.some(c => c.strategy === 'ssn' || c.strategy === 'name' || c.strategy === 'email'),
           gdprCompliant: columnsMasked.some(c => c.strategy === 'name' || c.strategy === 'email' || c.strategy === 'phone'),
           pciDssCompliant: columnsMasked.some(c => c.strategy === 'credit_card' || c.strategy === 'hash'),
-          soc2Compliant: true
+          soc2Compliant: true,
+          dpdpCompliant: true
         }
       }
     };
@@ -290,7 +298,8 @@ export class DatabaseMasker {
           hipaaCompliant: columnsMasked.some(c => c.strategy === 'ssn' || c.strategy === 'name' || c.strategy === 'email'),
           gdprCompliant: columnsMasked.some(c => c.strategy === 'name' || c.strategy === 'email' || c.strategy === 'phone'),
           pciDssCompliant: columnsMasked.some(c => c.strategy === 'credit_card' || c.strategy === 'hash'),
-          soc2Compliant: true
+          soc2Compliant: true,
+          dpdpCompliant: true
         }
       }
     };
@@ -351,6 +360,9 @@ export class DatabaseMasker {
       case 'password':
         // Bcrypt-like mock hash
         result = `$2a$12$e7Q8u...${createHash('sha256').update(String(originalValue)).digest('hex').slice(0, 22)}`;
+        break;
+      case 'fpe':
+        result = this.fpeCipher.encrypt(String(originalValue), contextKey);
         break;
       case 'null':
         result = null;

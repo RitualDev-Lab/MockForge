@@ -22,7 +22,7 @@ export { InMemoryMockDatabase } from './wasm/memory-db.js';
 export { MockDatabaseBridge, createMockDatabase } from './wasm/pglite-bridge.js';
 export * from './licensing/commercial.js';
 export { MockForgeCli, type CliArgs } from './cli/index.js';
-export * from './anonymizer/database-masker.js';
+export * from './anonymizer/index.js';
 export { EphemeralMockServer, type MockServerOptions } from './server/mock-server.js';
 export * from './orm/synchronizer.js';
 export {
