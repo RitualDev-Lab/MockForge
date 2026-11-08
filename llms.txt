@@ -1,0 +1,19 @@
+# MockForge
+
+> High-performance relational mock database & seed synthesizer powered by Kahn's Topological DAG Sorter and WebAssembly DuckDB/SQLite.
+
+Maintained by RitualDev Lab (https://ritualdev.in).
+
+## Official Web Application
+Live In-Browser Playground: https://ritualdev.in/mockforge
+
+## Core Capabilities
+- **Relational Integrity Guaranteed**: Parses foreign keys across complex multi-table schemas and topologically sorts insertion order using Kahn's algorithm.
+- **WASM Engine**: Runs 100% in-browser via WebAssembly DuckDB or SQLite with zero backend dependencies.
+- **Multi-Format Export**: Generates coherent relational datasets exportable to SQL (Postgres, MySQL, SQLite), JSON, CSV, and Parquet.
+- **Realistic Distributions**: Zipfian skew, realistic email/domain distributions, chronological timestamp ordering, and mathematical referential parity.
+
+## Quickstart
+```bash
+npx @ritualdev/mockforge generate --schema ./schema.sql --rows 1000 --format sql
+```
