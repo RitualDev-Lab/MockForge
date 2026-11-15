@@ -158,21 +158,44 @@ console.log(`Generated ${result.totalRows} rows across ${result.tables.length} t
 
 ---
 
-## 💖 Sponsor & Support via Dodo Payments
+## 🏢 Enterprise Commercial Edition & MockForge-Core
+
+| Feature | Community Engine ($0 Free) | MockForge-Core Pro ($49/mo) |
+| :--- | :---: | :---: |
+| **Synthetic Relational Generation** | ✅ Basic Types (88k rows/sec) | ✅ Unlimited Enterprise Data Generation |
+| **In-Memory SQL/PGlite Mocks** | ✅ SQLite, PGlite | ✅ SQLite, Postgres, MySQL, CockroachDB, MariaDB |
+| **HIPAA Synthetic Medical Data** | ❌ None | ✅ Complete HL7, FHIR, Patient Medical History Models |
+| **PCI-DSS Synthetic Financial Data** | ❌ None | ✅ Visa, Mastercard, IBAN, Swift, Ledger Mock Engines |
+| **Production Database Masking** | ❌ Manual | ✅ AST-Level PII Scrambling & Anonymization Pipeline |
+| **Automated CI/CD Seeder** | ❌ Local Only | ✅ GitHub Actions & GitLab CI Auto-Seeding Runner |
+| **Collaborator Git Access** | ❌ Public Repo | ✅ Instant GitHub Invite to `RitualDev-Lab/MockForge-Core` |
+
+<div align="center">
+
+[![Subscribe to MockForge-Core](https://img.shields.io/badge/Subscribe_to_MockForge--Core-$49%2Fmo-00F59B?style=for-the-badge&logo=database&logoColor=black)](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva?quantity=1&paymentAmount=49&amount=49&currency=USD&metadata_tier=mockforge_pro_49&metadata_coreRepo=RitualDev-Lab%2FMockForge-Core&redirect_url=https%3A%2F%2Fritualdev.in%2Fpricing%2Fsuccess%2F%3Fproduct%3Dmockforge_pro_49)
+
+[**⚡ Subscribe to MockForge-Core ($49/mo) & Unlock Private Repo Access Instantly**](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva?quantity=1&paymentAmount=49&amount=49&currency=USD&metadata_tier=mockforge_pro_49&metadata_coreRepo=RitualDev-Lab%2FMockForge-Core&redirect_url=https%3A%2F%2Fritualdev.in%2Fpricing%2Fsuccess%2F%3Fproduct%3Dmockforge_pro_49)
+
+<sub>🔒 *Automated GitHub Fulfillment: Enter your GitHub username during checkout. Our webhook immediately dispatches a collaborator invite to `MockForge-Core`.*</sub>
+
+</div>
+
+---
+
+## 💖 Community Support & Alternative Sponsorship
 
 MockForge is engineered by RitualDev Lab. Your sponsorship directly finances our client-side WebAssembly SQLite/PGlite test runners, synthetic data generation algorithms, and multi-dialect schema fixture tooling.
 
 <div align="center">
 
-[![Sponsor on Dodo Payments](https://img.shields.io/badge/Sponsor_via_Dodo-Payments-8b5cf6?style=for-the-badge&logo=shield&logoColor=white)](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva)
 [![Interactive Donation Portal](https://img.shields.io/badge/Donation_Portal-Cards%20%7C%20UPI%20%7C%20Apple%20Pay-ff5964?style=for-the-badge&logo=heart&logoColor=white)](https://ritualdev.in/donate)
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-RitualDev--Lab-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/RitualDev-Lab)
 
 <br/>
 
-[**⚡ 1-Click Dodo Payments Checkout**](https://checkout.dodopayments.com/buy/pdt_0NpjONGugY5QkrFDUaPva) &nbsp;•&nbsp; [**🎁 Interactive Donation Form (USD & INR UPI)**](https://ritualdev.in/donate) &nbsp;•&nbsp; [**❤️ GitHub Sponsors**](https://github.com/sponsors/RitualDev-Lab)
+[**🎁 Interactive Donation Form (USD & INR UPI)**](https://ritualdev.in/donate) &nbsp;•&nbsp; [**❤️ GitHub Sponsors**](https://github.com/sponsors/RitualDev-Lab)
 
-<sub>🔒 *Zero physical shipping required. Powered by Dodo Payments (Merchant of Record) with instant tax invoice and global payment methods (Cards, UPI, Apple Pay).*</sub>
+<sub>🔒 *Powered by Dodo Payments (Merchant of Record) with instant tax invoice and global payment methods (Cards, UPI, Apple Pay).*</sub>
 
 </div>
 
