@@ -12,6 +12,11 @@ export {
   type GenerationOptions,
   type RelationalDataset
 } from './generator/engine.js';
+export {
+  HighThroughputStreamingEngine,
+  type StreamGenerationOptions,
+  type StreamMetrics
+} from './generator/streaming-engine.js';
 export { LocalSemanticHeuristics } from './inference/local-heuristics.js';
 export { SchemaSemanticCache } from './inference/cache.js';
 export { GeminiInferenceClient } from './inference/gemini-client.js';

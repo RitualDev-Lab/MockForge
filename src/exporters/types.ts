@@ -6,7 +6,9 @@ export type ExportFormat =
   | 'prisma'
   | 'drizzle'
   | 'csv'
-  | 'json';
+  | 'json'
+  | 'debezium-cdc'
+  | 'kafka';
 
 export interface ExportOptions {
   format: ExportFormat;

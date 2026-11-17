@@ -7,6 +7,7 @@ import { SqliteExporter } from './sqlite.js';
 import { OrmExporter } from './orm.js';
 import { CsvExporter } from './csv.js';
 import { JsonExporter } from './json.js';
+import { CdcExporter } from './cdc.js';
 
 export * from './types.js';
 export { SqlUtils } from './sql-utils.js';
@@ -16,6 +17,7 @@ export { SqliteExporter } from './sqlite.js';
 export { OrmExporter } from './orm.js';
 export { CsvExporter } from './csv.js';
 export { JsonExporter } from './json.js';
+export { CdcExporter } from './cdc.js';
 
 /**
  * Universal exporter that transforms a relational dataset into the target database script or ORM file bundle
@@ -59,6 +61,10 @@ export function exportDataset(
     case 'json':
       files = [JsonExporter.exportBundle(dataset), ...JsonExporter.exportIndividual(dataset)];
       break;
+
+    case 'debezium-cdc':
+    case 'kafka':
+      return CdcExporter.export(dataset, options);
 
     default:
       files = [PostgresExporter.exportInsert(dataset, schema, options)];
