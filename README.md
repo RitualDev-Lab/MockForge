@@ -57,3 +57,12 @@ MockForge is engineered by RitualDev Lab. Your sponsorship directly finances our
 ## 📄 License
 
 Proprietary © [RitualDev Studio](https://ritualdev.in). All rights reserved.
+
+---
+
+## 🛡️ Community & Governance
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Accessibility Statement](ACCESSIBILITY.md)
+- [License](LICENSE)
