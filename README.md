@@ -6,7 +6,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/RitualDev-Lab/MockForge?color=blue&label=Release&logo=github)](https://github.com/RitualDev-Lab/MockForge/releases/latest)
 [![CLI Tool](https://img.shields.io/badge/CLI-mockforge-black?logo=gnubash)](https://github.com/RitualDev-Lab/MockForge/releases)
 [![Python SDK](https://img.shields.io/badge/Python-3.8+-blue?logo=python)](https://github.com/RitualDev-Lab/MockForge/releases)
-[![NPM Package](https://img.shields.io/badge/NPM-@ritualdev/mockforge-red?logo=npm)](https://github.com/RitualDev-Lab/MockForge/releases)
+[![NPM Package](https://img.shields.io/badge/NPM-@ritualdev-lab/mockforge-red?logo=npm)](https://github.com/RitualDev-Lab/MockForge/releases)
 [![License](https://img.shields.io/badge/License-Proprietary%20/%20Community-orange)](./LICENSE)
 [![Zero VPS Cost](https://img.shields.io/badge/Cloud_Cost-$0.00/mo-success)](https://mockforge.io)
 
@@ -78,7 +78,7 @@ flowchart TD
 Download the pre-compiled binary from [Latest Releases](https://github.com/RitualDev-Lab/MockForge/releases/latest) or install via npm:
 
 ```bash
-npm install -g @ritualdev/mockforge
+npm install -g @ritualdev-lab/mockforge
 ```
 
 Generate 1,000 relational records with foreign key integrity from any SQL schema:
@@ -122,11 +122,11 @@ See [examples/pytest_fixtures.py](./examples/pytest_fixtures.py) for a complete 
 ### 3. Node.js / TypeScript SDK
 
 ```bash
-npm install @ritualdev/mockforge
+npm install @ritualdev-lab/mockforge
 ```
 
 ```typescript
-import { MockForgeEngine } from '@ritualdev/mockforge';
+import { MockForgeEngine } from '@ritualdev-lab/mockforge';
 
 const engine = new MockForgeEngine();
 const result = await engine.synthesizeFromSql(`
