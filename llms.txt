@@ -15,5 +15,5 @@ Live In-Browser Playground: https://ritualdev.in/mockforge
 
 ## Quickstart
 ```bash
-npx @ritualdev/mockforge generate --schema ./schema.sql --rows 1000 --format sql
+npx @ritualdev-lab/mockforge generate --schema ./schema.sql --rows 1000 --format sql
 ```

@@ -50,7 +50,7 @@ runs:
         INPUT_FAIL_ON_CYCLE: ${{ inputs.fail_on_cycle }}
       run: |
         echo "🎲 Executing MockForge AI Relational Schema & Seed Synthesizer..."
-        pip install --quiet mockforge || npm install -g --silent @ritualdev/mockforge
+        pip install --quiet mockforge || npm install -g --silent @ritualdev-lab/mockforge
 
         python -c "
         import os, sys
