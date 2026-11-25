@@ -8,7 +8,7 @@
 [![Python SDK](https://img.shields.io/badge/Python-3.8+-blue?logo=python)](https://github.com/RitualDev-Lab/MockForge/releases)
 [![NPM Package](https://img.shields.io/badge/NPM-@ritualdev-lab/mockforge-red?logo=npm)](https://github.com/RitualDev-Lab/MockForge/releases)
 [![License](https://img.shields.io/badge/License-Proprietary%20/%20Community-orange)](./LICENSE)
-[![Zero VPS Cost](https://img.shields.io/badge/Cloud_Cost-$0.00/mo-success)](https://mockforge.io)
+[![Zero VPS Cost](https://img.shields.io/badge/Cloud_Cost-$0.00/mo-success)](https://ritualdev.in/mockforge)
 
 **MockForge AI** is a blazing-fast, zero-cloud-overhead relational mock database and seed synthesizer. Powered by **Kahn's Topological DAG Sorter**, an **in-browser WebAssembly SQLite engine**, and **Gemini 1.5 Flash**, MockForge generates millions of synthetic rows with 100% foreign-key integrity at **88,000+ rows/second** — completely in-memory with $0 cloud compute overhead ($0 VPS).
 
@@ -57,7 +57,7 @@ flowchart TD
         TSExp["TypeScript / Prisma Seeders"]
     end
 
-    subgraph ZeroCostEdge["Serverless Edge (api.mockforge.io)"]
+    subgraph ZeroCostEdge["RitualDev Portal (ritualdev.in/mockforge)"]
         CFWorkers["Cloudflare Workers (Headless CI/CD Seed API)"]
     end
 
@@ -91,7 +91,7 @@ Supported output formats: `--format sql`, `--format json`, `--format csv`, `--fo
 
 ---
 
-### 2. Python SDK Quickstart (`pip install mockforge`)
+### 2. Python SDK Quickstart (`pip install mockforge-defense` — GitHub Releases / Core)
 
 Ideal for Pytest fixtures, Django, SQLAlchemy, and automated testing pipelines:
 
